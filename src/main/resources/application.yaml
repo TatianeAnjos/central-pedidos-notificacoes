@@ -1,0 +1,20 @@
+server:
+  port: 9092
+
+notificacao:
+  email:
+    pedido_confirmado:
+      assunto: "Pedido Confirmado!"
+      texto: "Seu pedido foi confirmado com sucesso!"
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      emailService:
+        registerHealthIndicator: true
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 2
+        automaticTransitionFromOpenToHalfOpenEnabled: true

@@ -17,6 +17,6 @@ public class NotificacaoConsumer {
     @KafkaListener(topics = "pedido.criado", groupId = "notificacao-group")
     public void consumirMensagemNotificacao(Evento evento) {
         log.info("Iniciando consumo de mensagem para enviar notificacao: {}", evento.getIdMensagem());
-        emailService.enviaConfirmacao(evento);
+        emailService.processaConfirmacao(evento);
     }
 }

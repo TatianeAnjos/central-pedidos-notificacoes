@@ -1,8 +1,13 @@
 package com.tatiane.centralpedidosnotificacoes;
 
-public class CentralPedidosNotificacoesApplication {
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.retry.annotation.EnableRetry;
 
+@SpringBootApplication
+@EnableRetry
+public class CentralPedidosNotificacoesApplication {
     public static void main(String[] args) {
-        System.out.println("Hello world");
+        SpringApplication.run(CentralPedidosNotificacoesApplication.class, args);
     }
 }

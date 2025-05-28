@@ -4,5 +4,5 @@ import com.tatiane.centralpedidosnotificacoes.dto.Evento;
 
 public interface NotificacaoService {
 
-    void enviaConfirmacao(Evento evento);
+    void processaConfirmacao(Evento evento);
 }
