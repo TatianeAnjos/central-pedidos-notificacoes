@@ -1,0 +1,8 @@
+package com.tatiane.centralpedidosnotificacoes.service;
+
+import com.tatiane.centralpedidosnotificacoes.dto.Evento;
+
+public interface NotificacaoService {
+
+    void enviaConfirmacao(Evento evento);
+}
