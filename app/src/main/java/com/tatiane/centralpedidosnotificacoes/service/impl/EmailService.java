@@ -18,6 +18,9 @@ import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -31,12 +34,9 @@ public class EmailService implements NotificacaoService {
 
     private final EventoProcessadoRepository eventoProcessadoRepository;
 
+    private final String ASSUNTO_EMAIL_CONFIRMADO = "Pedido Confirmado!";
 
-    @Value("${notificacao.email.pedido_confirmado.assunto}")
-    private String assuntoEmailConfirmado;
-
-    @Value("${notificacao.email.pedido_confirmado.texto}")
-    private String textoEmailConfirmado;
+    private final String TEXTO_EMAIL_CONFIRMADO = "Seu pedido foi confirmado com sucesso!";
 
     @Retryable(
             value = {RuntimeException.class},
@@ -44,7 +44,11 @@ public class EmailService implements NotificacaoService {
             backoff = @Backoff(delay = 2000)
     )
     @CircuitBreaker(name = "emailService", fallbackMethod = "fallbackEnvioEmail")
-    public void processaConfirmacao(Evento evento) {
+    public void processaConfirmacao(String mensagem) {
+
+        log.info("Extraindo evento a partir da mensagem recebida");
+        Evento evento = this.extrairMensagemEvento(mensagem);
+
         Optional<EventoProcessado> eventoProcessado = eventoProcessadoRepository.findById(evento.getIdMensagem());
 
         if (eventoProcessado.isPresent()) {
@@ -52,20 +56,30 @@ public class EmailService implements NotificacaoService {
             return;
         }
 
+        log.info("Extraindo pedido a partir do evento");
         Pedido pedido = this.extrairPedido(evento);
 
-        log.info("Enviando mensagem para o cliente: {}, id do pedido: {}", pedido.getNomeCliente(), evento.getMensagemPedido());
+        log.info("Enviando mensagem para o cliente: {}, id do pedido: {}", pedido.getNomeCliente(), pedido.getIdPedido());
         this.enviarMensagem(pedido.getEmailCliente(), pedido.getIdPedido());
 
-        log.info("Salvando id de mensagem processada no banco de dados. id da mensagem: {} ", evento.getIdMensagem());
+        log.info("Salvando id de mensagem processada no banco de dados. Id da mensagem: {} ", evento.getIdMensagem());
         eventoProcessadoRepository.save(EventoProcessado.builder().idEventoProcessado(evento.getIdMensagem()).build());
 
-        log.info("Confirmação enviada com sucesso");
+        log.info("Processamento de mensagem executado com sucesso");
+    }
+
+    private Evento extrairMensagemEvento(String mensagem) {
+        try {
+            log.info("Extraindo mensagem evento do json recebido: {}", mensagem);
+            return objectMapper.readValue(mensagem, Evento.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Erro ao desserializar evento de pedido", e);
+        }
     }
 
     private Pedido extrairPedido(Evento evento) {
         try {
-            log.info("Extraindo mensagem do json recebido: {}", evento.getMensagemPedido());
+            log.info("Extraindo mensagem pedido: {}", evento.getMensagemPedido());
             return objectMapper.readValue(evento.getMensagemPedido(), Pedido.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Erro ao desserializar evento de pedido", e);
@@ -75,9 +89,14 @@ public class EmailService implements NotificacaoService {
     public void enviarMensagem(String destinatarioEmail, Long idPedido) {
         SimpleMailMessage mensagem = new SimpleMailMessage();
         mensagem.setTo(destinatarioEmail);
-        mensagem.setSubject(assuntoEmailConfirmado);
-        mensagem.setText(textoEmailConfirmado + " " + idPedido);
-        mailSender.send(mensagem);
+        mensagem.setSubject(ASSUNTO_EMAIL_CONFIRMADO);
+        mensagem.setText(TEXTO_EMAIL_CONFIRMADO + " " + idPedido);
+        log.info("Mensagem pronta para ser enviada {}", mensagem);
+
+        // caso deseje fazr o envio real do email, por favor,
+        // adicionar as variáveis de configuração no arquivo application.yml e descomentar a linha abaixo
+        //mailSender.send(mensagem);
+        log.info("Mensagem enviada com sucesso!");
     }
 
     @Recover

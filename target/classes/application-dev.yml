@@ -1,11 +1,5 @@
 server:
-  port: 9092
-
-notificacao:
-  email:
-    pedido_confirmado:
-      assunto: "Pedido Confirmado!"
-      texto: "Seu pedido foi confirmado com sucesso!"
+  port: 8081
 
 resilience4j:
   circuitbreaker:
@@ -18,3 +12,10 @@ resilience4j:
         waitDurationInOpenState: 10s
         permittedNumberOfCallsInHalfOpenState: 2
         automaticTransitionFromOpenToHalfOpenEnabled: true
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+  h2:
+    console:
+      enabled: true
