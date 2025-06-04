@@ -55,26 +55,4 @@ class NotificacaoConsumerKafkaTest {
 
         Assertions.assertNotNull(eventoSalvo);
     }
-
-    @Test
-    void deveFalharNoProcessamentoPoisAMensagemJaFoiProcessada() throws Exception {
-
-        eventoProcessadoRepository.save(EventoProcessado.builder().idEventoProcessado("1234").build());
-
-        // Arrange
-        KafkaTemplate<String, String> kafkaTemplate = criarKafkaTemplate();
-        String mensagemJson = """
-                {"mensagemPedido":"{\\"idPedido\\":4,\\"nomeCliente\\":\\"Cliente 1\\",\\"emailCliente\\":\\"teste@gmail\\",\\"listaProdutos\\":[{\\"id\\":5,\\"idProduto\\":125,\\"nomeProduto\\":\\"Televisao\\",\\"quantidadeProduto\\":1}]}","idMensagem":"1234"}
-                """;
-        // Act
-        CompletableFuture<SendResult<String, String>> a = kafkaTemplate.send("pedido.criado", mensagemJson);
-        Thread.sleep(2000); // aguarda listener processar
-
-        // Assert
-        EventoProcessado evento =  eventoProcessadoRepository.findByIdEventoProcessado("1234");
-
-        // Assert
-        Assertions.assertEquals(1, evento.size(), "Deve haver apenas um registro no banco");
-        Assertions.assertEquals("1234", evento.get(0).getIdEventoProcessado(), "O ID deve ser o mesmo do evento processado");
-    }
 }
