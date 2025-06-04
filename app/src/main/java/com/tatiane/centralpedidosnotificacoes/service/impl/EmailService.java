@@ -10,7 +10,6 @@ import com.tatiane.centralpedidosnotificacoes.service.NotificacaoService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.retry.annotation.Backoff;
@@ -18,9 +17,6 @@ import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Optional;
 
 @Service

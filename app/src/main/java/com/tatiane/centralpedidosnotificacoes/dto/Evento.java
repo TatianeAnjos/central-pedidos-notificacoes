@@ -6,5 +6,4 @@ import lombok.Getter;
 public class Evento {
     private String mensagemPedido;
     private String idMensagem;
-    private String payload;
 }

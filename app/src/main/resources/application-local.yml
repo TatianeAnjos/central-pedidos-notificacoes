@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8082
 
 resilience4j:
   circuitbreaker:
@@ -20,7 +20,7 @@ spring:
     console:
       enabled: true
   datasource:
-    url: jdbc:h2:mem:centralpedidosnotificacoesdb
-    driver-class-name: org.h2.Driver
-    username: tatiane-notificacoes
-    password: olamundo
+    url: jdbc:postgresql://localhost:5432/central_pedidos_assincrona
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
