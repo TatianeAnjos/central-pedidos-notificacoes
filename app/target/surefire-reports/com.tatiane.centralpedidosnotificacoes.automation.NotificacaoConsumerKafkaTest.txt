@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------
+Test set: com.tatiane.centralpedidosnotificacoes.automation.NotificacaoConsumerKafkaTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.327 s <<< FAILURE! -- in com.tatiane.centralpedidosnotificacoes.automation.NotificacaoConsumerKafkaTest
+com.tatiane.centralpedidosnotificacoes.automation.NotificacaoConsumerKafkaTest.deveProcessarMensagemDeConfirmacao -- Time elapsed: 0.012 s <<< ERROR!
+org.junit.jupiter.api.extension.ParameterResolutionException: No ParameterResolver registered for parameter [final com.tatiane.centralpedidosnotificacoes.service.impl.EmailService emailService] in constructor [public com.tatiane.centralpedidosnotificacoes.automation.NotificacaoConsumerKafkaTest(com.tatiane.centralpedidosnotificacoes.service.impl.EmailService,com.tatiane.centralpedidosnotificacoes.repository.EventoProcessadoRepository)].
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+

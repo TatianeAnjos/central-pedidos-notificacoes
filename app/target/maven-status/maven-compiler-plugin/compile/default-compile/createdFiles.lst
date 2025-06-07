@@ -1,0 +1,11 @@
+com\tatiane\centralpedidosnotificacoes\dto\Evento.class
+com\tatiane\centralpedidosnotificacoes\service\impl\EmailService.class
+com\tatiane\centralpedidosnotificacoes\config\EmailConfig.class
+com\tatiane\centralpedidosnotificacoes\CentralPedidosNotificacoesApplication.class
+com\tatiane\centralpedidosnotificacoes\entities\EventoProcessado.class
+com\tatiane\centralpedidosnotificacoes\consumers\NotificacaoConsumer.class
+com\tatiane\centralpedidosnotificacoes\dto\Produto.class
+com\tatiane\centralpedidosnotificacoes\repository\EventoProcessadoRepository.class
+com\tatiane\centralpedidosnotificacoes\dto\Pedido.class
+com\tatiane\centralpedidosnotificacoes\entities\EventoProcessado$EventoProcessadoBuilder.class
+com\tatiane\centralpedidosnotificacoes\service\NotificacaoService.class

@@ -1,0 +1,26 @@
+server:
+  port: 8082
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      emailService:
+        registerHealthIndicator: true
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 2
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/central_pedidos_assincrona
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
